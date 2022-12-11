@@ -4,7 +4,7 @@ from health_predictor import health_prediction
 if __name__=='__main__':
     st.set_page_config(page_title="Health Predictor")
     st.header("Health Predictor")
-    st.write("**Find out if you are susceptible to Diabetes, Hypertension or Stoke**")
+    st.write("**Find out if you are susceptible to Diabetes, Hypertension or Stroke**")
     
     age_cats = {'18-24':1,'25-29':2,'30-34':3,'35-39':4,'40-44':5,
                 '45-49':6,'50-54':7,'55-59':8,'60-64':9,'65-69':10,
@@ -25,16 +25,13 @@ if __name__=='__main__':
         else:
             sex=0
         
-        bmi = st.slider("Body Mass Index (BMI)",min_value=12,max_value=98,step=1,value=30)
+        bmi = st.slider("Body Mass Index (BMI)",min_value=12,max_value=98,step=1,value=25)
         
         st.markdown("""----------""")
         st.write("**Lifestyle Details**")
         
-        chol = st.radio("Do you have high cholesterol?",["High","Low"])
-        if(chol == "High"):
-            highchol = 1
-        else:
-            highchol = 0
+        chol = st.radio("Do you have high cholesterol?",["Yes","No"])
+        highchol = yn[chol]
         
         cholch = st.radio("Have you had a cholesterol check in last 5 years?",["Yes","No"])
         cholcheck=yn[cholch]
@@ -43,7 +40,7 @@ if __name__=='__main__':
                          ["Yes","No"])
         smoker=yn[smoke]
         
-        heartdis = st.radio("Do you suffer from Coronary Heart Disease (CHD) or had an incident of Myocardial Infarction (MI) (a heart attack)?",
+        heartdis = st.radio("Do you suffer from Coronary Heart Disease (CHD) or had an incident of Myocardial Infarction (MI - a heart attack)?",
                             ["Yes","No"])
         heartdiseaseorattack=yn[heartdis]
         
@@ -59,8 +56,7 @@ if __name__=='__main__':
                        ["Yes","No"])
         veggies = yn[veg]
         
-        drink = st.radio("""Adult male: Do you drink more than 14 drinks a week?\n
-                            Adult female: Do you drink more than 7 drinks a week?""",
+        drink = st.radio("Adult male: Do you drink more than 14 drinks a week?  Adult female: Do you drink more than 7 drinks a week?",
                          ["Yes","No"])
         hvyalcoholconsump = yn[drink]
         
@@ -86,9 +82,17 @@ if __name__=='__main__':
                     physactivity, fruits, veggies, hvyalcoholconsump, genhlth,
                     menthlth, physhlth, diffwalk]
         
-        dia,hyp,str = health_prediction(col_vals=col_vals)
+        dia,hyp,stk = health_prediction(col_vals=col_vals)
         
         st.write("**Susceptibility**")
         st.write("Diabetes: **{}**".format(dia))
         st.write("Hypertension: **{}**".format(hyp))
-        st.write("Stroke: **{}**".format(str))
+        st.write("Stroke: **{}**".format(stk))
+        
+        if (dia=='No')&(hyp=='No')&(stk=='No'):
+            st.write("Congratulations! You are in good health. Continue what you're doing.") 
+        else:
+            st.write("Better cut those carbs and sweets and savories, hit the treadmill, and lay off those beers and cigarettes.")
+        st.markdown("----")
+        st.markdown("""This health predictor was built by training machine learning models on this dataset from [kaggle](https://www.kaggle.com/datasets/prosperchuks/health-dataset).
+                    Look at the source code [here](https://github.com/spikspiks/health_predictor).""")
