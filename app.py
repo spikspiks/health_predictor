@@ -25,7 +25,9 @@ if __name__=='__main__':
         else:
             sex=0
         
-        bmi = st.slider("Body Mass Index (BMI)",min_value=12,max_value=98,step=1,value=25)
+        weight = st.number_input("Weight (kg): ",min_value=0,step=1,value=0)
+        
+        height = st.number_input("Height (m): ",min_value=0.0,step=0.01,value=1.60)
         
         st.markdown("""----------""")
         st.write("**Lifestyle Details**")
@@ -78,6 +80,7 @@ if __name__=='__main__':
         submit_form = st.form_submit_button("Submit")
     
     if submit_form:
+        bmi = weight/height/height
         col_vals = [age,sex,highchol,cholcheck,bmi,smoker, heartdiseaseorattack, 
                     physactivity, fruits, veggies, hvyalcoholconsump, genhlth,
                     menthlth, physhlth, diffwalk]
